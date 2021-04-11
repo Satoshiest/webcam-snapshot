@@ -4,27 +4,30 @@ import cv2
 import glob
 
 class GUI:
-    def __init__(self, mainwindow):
+    def __init__(self, based):
         self.counter = 0
-        self.mainframe = mainframe
-        self.mainframe.title("View Mode Frame")
-        self.mainframe.state('zoomed')
-        self.mainframe.configure(bg = 'silver')
-        self.frame = tk.Frame(mainwindow)
-        self.image = tk.Label(self.frame)
-        self.frame.place(relheight = 0.9, relwidth = 0.9, relx = 0.05, rely = 0.05)
-        self.image.pack()
-        self.pic()
-        #self.video()
+        self.based = based
+        self.based.title("View Mode Frame")
+        self.based.configure(bg ='silver')
 
+        # https://www.howtobuildsoftware.com/index.php/how-do/4q1/python-canvas-tkinter-tkinter-canvas-resizing-tkinter-window-for-full-screen
+        self.based.state('zoomed')
+        self.frame = tk.Frame(based)
+        self.picture = tk.Label(self.frame)
+        self.frame.place(relheight = 0.9, relwidth = 0.90, relx = 0.05, rely = 0.05)
+        self.picture.pack()
+        self.picture_viewer()
 
-
+    # Image sliders that change the image in set amount of time
     def picture_viewer(self):
         self.image_list= []
-        for i in glob.glob(r'C:\Users\uokta\Downloads\webcam-snapshot-main (1)\webcam-snapshot-main\term project\*.jpg'):
-            picture = i
-            self.image_list.append(picture)
 
+        # https://www.techbeamers.com/python-glob/
+        # Change \uokta\Downloads\ to relevant directory in your PC
+        for i in glob.glob(r'C:\Users\uokta\Downloads\webcam-snapshot-main (1)\webcam-snapshot-main\term project\*.jpg'):
+            added = i
+            self.image_list.append(added)
+        # Changes image until it's the last one
         if self.counter == len(self.image_list) -1:
             self.counter = 0
         else:
@@ -36,17 +39,17 @@ class GUI:
         self.image_width = self.load.size[0]
         self.image_height = self.load.size[1]
 
-        self.real_aspect = self.pic_width/self.image_height
-
+        self.real_aspect = self.image_width/self.image_height
         self.cal_width = int(self.real_aspect * 800)
+        self.final = self.load.resize((self.cal_width, 800))
 
-        self.load2 = self.load.resize((self.cal_width, 800))
-
-        self.render = ImageTk.PhotoImage(self.load2)
-        self.image.config(image = self.render)
-        self.image.image = self.render
-        root.after(2000, self.image)
+        self.render = ImageTk.PhotoImage(self.final)
+        self.picture.config(image = self.render)
+        self.picture.image = self.render
+        # changes image after 1.5 seconds or 1500 milliseconds
+        # https://www.tutorialspoint.com/after-method-in-python-tkinter
+        root.after(1500, self.picture_viewer)
 
 root = tk.Tk()
-myprog = GUI(root)
+program = GUI(root)
 root.mainloop()
