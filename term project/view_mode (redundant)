@@ -1,3 +1,5 @@
+# This code was made by Umut and Zaid, the actual submitted code is inside the other file, camera_v1.py
+
 import tkinter as tk
 from PIL import Image, ImageTk
 import cv2
