@@ -16,10 +16,24 @@ def view_image():
     root = tk.Tk()
     app = ViewMode(root, filepath.split('/')[-1])  # Inherit
     app.mainloop()
-
+    
 
 def watch_video():
-    pass
+    fTyp = [("", ".mp4")]
+    iDir = os.path.abspath(os.path.dirname(__file__))
+    filepath = filedialog.askopenfilename(filetypes=fTyp, initialdir=iDir)
+    cap = cv2.VideoCapture(filepath)
+    while cap.isOpened():
+        ret, frame = cap.read()
+        if ret:
+            cv2.imshow("Video", frame)
+            if cv2.waitKey(25) & 0xFF == ord('q'):
+                break
+        #  exit when played till end
+        else:
+            break
+    cap.release()
+    cv2.destroyAllWindows()
 
 
 class Application(tk.Frame):
@@ -74,10 +88,15 @@ class Application(tk.Frame):
         self.view.configure(width=15, command=view_image)
         self.view.grid(column=2, row=0, padx=30, pady=10)
 
+        # Watch button
+        self.view = ttk.Button(self.btn_frame, text='Watch Video')
+        self.view.configure(width=15, command=watch_video)
+        self.view.grid(column=3, row=0, padx=30, pady=10)
+
         # Close Button
         self.btn_close = ttk.Button(self.btn_frame, text='Close')
         self.btn_close.configure(width=15, command=self.close_button)
-        self.btn_close.grid(column=3, row=0, padx=30, pady=10)
+        self.btn_close.grid(column=4, row=0, padx=30, pady=10)
 
         # ---------------------------------------------------------
         # Canvas Update
@@ -156,3 +175,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
