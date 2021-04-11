@@ -63,31 +63,17 @@ class Application(tk.Frame):
         # Record Button
         self.btn_snapshot = ttk.Button(self.btn_frame, text='Record')
         self.btn_snapshot.configure(width=15, command=self.record)
-        self.btn_snapshot.grid(column=1, row=0, padx=20, pady=10)
+        self.btn_snapshot.grid(column=1, row=0, padx=30, pady=10)
 
         # Close Button
         self.btn_close = ttk.Button(self.btn_frame, text='Close')
         self.btn_close.configure(width=15, command=self.close_button)
-        self.btn_close.grid(column=2, row=0, padx=10, pady=10)
+        self.btn_close.grid(column=2, row=0, padx=30, pady=10)
 
-        # file search bar
-
-        # File name Label
-        self.s = StringVar()
-        self.s.set('File Name：')
-        label1 = ttk.Label(self.btn_frame, textvariable=self.s)
-        label1.grid(row=0, column=4)
-
-        # file name search bar
-        self.file_path = StringVar()
-        filepath_entry = ttk.Entry(self.btn_frame, textvariable=self.file_path,
-                                   width=50)
-        filepath_entry.grid(row=0, column=5)
-
-        # search button
-        refer_button = ttk.Button(self.btn_frame, text='Search',
-                                  command=search)
-        refer_button.grid(row=0, column=6)
+        # view button
+        self.view = ttk.Button(self.btn_frame, text='View Image')
+        self.view.configure(width=15, command=search)
+        self.view.grid(column=3, row=0, padx=30, pady=10)
 
         # ---------------------------------------------------------
         # Canvas Update
