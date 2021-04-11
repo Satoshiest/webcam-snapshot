@@ -1,12 +1,21 @@
-from tkinter import *
 import tkinter as tk
+from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
 import cv2
-import PIL.Image
-import PIL.ImageTk
+from PIL import Image, ImageTk
 import time
 import os
+
+
+def search():
+    fTyp = [("", "*")]
+    iDir = os.path.abspath(os.path.dirname(__file__))
+    filepath = filedialog.askopenfilename(filetypes=fTyp, initialdir=iDir)
+
+    root = tk.Tk()
+    app = ViewMode(root, filepath.split('/')[-1])  # Inherit
+    app.mainloop()
 
 
 class Application(tk.Frame):
@@ -77,7 +86,7 @@ class Application(tk.Frame):
 
         # search button
         refer_button = ttk.Button(self.btn_frame, text='Search',
-                                  command=self.click_refer_button)
+                                  command=search)
         refer_button.grid(row=0, column=6)
 
         # ---------------------------------------------------------
@@ -92,7 +101,7 @@ class Application(tk.Frame):
         _, frame = self.camera.read()
 
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        self.photo = PIL.ImageTk.PhotoImage(image=PIL.Image.fromarray(frame))
+        self.photo = ImageTk.PhotoImage(image=Image.fromarray(frame))
 
         # self.photo -> Canvas
         self.canvas1.create_image(0, 0, image=self.photo, anchor=tk.NW)
@@ -122,12 +131,31 @@ class Application(tk.Frame):
     def close_button(self):
         self.quit()
 
-    # finding the file path
-    def click_refer_button(self):
-        fTyp = [("", "*")]
-        iDir = os.path.abspath(os.path.dirname(__file__))
-        filepath = filedialog.askopenfilename(filetypes=fTyp, initialdir=iDir)
-        self.file_path.set(filepath)
+
+class ViewMode(tk.Frame):
+    def __init__(self, master, file):
+        super().__init__(master)
+        self.master.title("View Mode")
+        self.width = 1280
+        self.height = 720
+        self.file = file
+
+        # camera frame
+        self.cam_frame = ttk.LabelFrame(self.master, text='Photo')
+        self.cam_frame.pack(side=tk.BOTTOM)
+        self.cam_frame.configure(width=self.width + 30, height=self.height + 50)
+        self.cam_frame.grid_propagate(0)
+
+        self.canvas1 = tk.Canvas(self.cam_frame,
+                                 width=self.width, height=self.height)
+        self.canvas1.configure(width=self.width, height=self.height)
+        self.canvas1.grid(column=0, row=0, padx=10, pady=10)
+
+        self.canvas1.place(x=0, y=0)
+
+        self.img1 = Image.open(open(f'{self.file}', 'rb'))
+        self.img = ImageTk.PhotoImage(self.img1, master=self.cam_frame)  # image
+        self.canvas1.create_image(640, 360, image=self.img)
 
 
 def main():
@@ -135,6 +163,9 @@ def main():
     app = Application(master=root)  # Inherit
     app.mainloop()
 
+
+if __name__ == "__main__":
+    main()
 
 if __name__ == "__main__":
     main()
