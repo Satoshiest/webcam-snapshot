@@ -1,0 +1,139 @@
+from tkinter import *
+from tkinter import messagebox
+
+root = Tk()
+root.geometry("500x500")
+
+frame = LabelFrame(root, borderwidth=0, highlightthickness=0)
+frame.pack()
+
+menu = Menu(root)
+root.config(menu=menu)
+
+def add_label_chocolate():
+    label = Label(frame, text = "Chocolate").pack()
+
+def quitting():
+    response = messagebox.askokcancel("Pop up", "Are you sure?")
+    if response == 1:
+        root.quit()
+
+def create_menus():
+    Record_menu = Menu(menu)
+    menu.add_cascade(label="Record", menu=Record_menu)
+    Record_menu.add_command(label="Snapshot", command=quitting)
+    Record_menu.add_command(label="Motion Sensor", command=quitting)
+
+
+    Actions_menu = Menu(menu)
+    menu.add_cascade(label="View", menu=Actions_menu)
+    Actions_menu.add_command(label="View Mode", command=quitting)
+
+create_menus()
+
+root.mainloop()
+
+
+
+import tkinter as tk
+from PIL import ImageTk,Image
+#Exercise 1
+
+class HelloWorld(tk.Tk):
+    def __init__(self):
+        super().__init__()
+
+        self.title("Title Here")
+
+        def show_frame(frame):
+            frame.tkraise()
+
+        frame1 = tk.Frame(self)
+        frame2 = tk.Frame(self)
+
+        for frame in (frame1,frame2):
+            frame.grid(row=0, column=0, sticky='nsew')
+
+
+
+        self.rowconfigure(0,weight=1)
+        self.columnconfigure(0, weight=1)
+
+        self.state('zoomed')
+
+        frame1_title=tk.Label(frame1,text="this is frame 1", bg='red')
+        frame1_title.pack()
+        frame1_button=tk.Button(frame1,text='change', command=lambda:show_frame(frame2))
+        frame1_button.pack(fill='both')
+        frame2_title = tk.Label(frame2, text="this is frame 2", bg='blue')
+        frame2_title.pack(fill='both')
+        frame2_button = tk.Button(frame2, text='change', command=lambda: show_frame(frame1))
+        frame2_button.pack()
+
+        show_frame(frame1)
+
+root = HelloWorld()
+
+root.mainloop()
+
+
+import tkinter as tk
+from PIL import Image, ImageTk
+
+#Exercise 2
+
+class HelloWorld(tk.Tk):
+    def __init__(self, image_files):
+        super().__init__()
+
+        # image = Image.open(r'C:\Users\Zaid\Desktop\Circle.PNG')
+        # photo = ImageTk.PhotoImage(image)
+       	# label = Label(image=photo)
+
+        self.title("Title Here")
+        self.value = 0
+				tk.Tk.__init__(self)
+        self.pictures = ((tk.PhotoImage(file=image), image)
+                              for image in image_files)
+        self.picture_display = tk.Label(self)
+        self.picture_display.pack()
+        img_name = next(self.pictures)
+				
+      	for i in range (1, 6):
+        	label = tk.Label(self, image=img_name)
+        	label.pack(expand=True, fill = "both", side = 'left')
+        
+        label.image = img_name
+
+    path="C:\Users\sairajesh\Desktop\image"
+		image_files=os.listdir(path)
+
+    def run(self):
+        self.mainloop()
+
+
+root = HelloWorld()
+
+root.mainloop()
+
+class MyGUI:
+    def __init__(self, parent):
+        self.parent = parent
+        self.frame = Frame(parent).grid(columnspan=5)
+        
+        for col_num in range(5):
+            self.parent.columnconfigure(col_num, weight =1)
+            
+        self.labelA = Label(parent, text='A', bg = 'blue', relief ='groove')
+        self.labelA.grid(row=0, column=0, columnspan =3,  sticky= 'ew')
+        #self.labelA.pack(fill = X)
+        
+        self.labelB = Label(parent, text='B', bg = 'white', relief ='groove')
+        self.labelB.grid(row=1, column=0, columnspan =3,  sticky= 'ew')
+        
+        self.labelC = Label(parent, text='C', bg = 'white', relief ='groove')
+        self.labelC.grid(row=0, column=3, sticky= 'ew', columnspan =3)
+        
+        self.labelD = Label(parent, text='D', bg = 'blue', relief ='groove')
+        self.labelD.grid(row=1, column=3,sticky= 'ew', columnspan =3)        
+        
