@@ -8,14 +8,18 @@ import time
 import os
 
 
-def search():
-    fTyp = [("", "*")]
+def view_image():
+    fTyp = [("", ".jpg")]
     iDir = os.path.abspath(os.path.dirname(__file__))
     filepath = filedialog.askopenfilename(filetypes=fTyp, initialdir=iDir)
 
     root = tk.Tk()
     app = ViewMode(root, filepath.split('/')[-1])  # Inherit
     app.mainloop()
+
+
+def watch_video():
+    pass
 
 
 class Application(tk.Frame):
@@ -65,15 +69,15 @@ class Application(tk.Frame):
         self.btn_snapshot.configure(width=15, command=self.record)
         self.btn_snapshot.grid(column=1, row=0, padx=30, pady=10)
 
+        # View button
+        self.view = ttk.Button(self.btn_frame, text='View Image')
+        self.view.configure(width=15, command=view_image)
+        self.view.grid(column=2, row=0, padx=30, pady=10)
+
         # Close Button
         self.btn_close = ttk.Button(self.btn_frame, text='Close')
         self.btn_close.configure(width=15, command=self.close_button)
-        self.btn_close.grid(column=2, row=0, padx=30, pady=10)
-
-        # view button
-        self.view = ttk.Button(self.btn_frame, text='View Image')
-        self.view.configure(width=15, command=search)
-        self.view.grid(column=3, row=0, padx=30, pady=10)
+        self.btn_close.grid(column=3, row=0, padx=30, pady=10)
 
         # ---------------------------------------------------------
         # Canvas Update
