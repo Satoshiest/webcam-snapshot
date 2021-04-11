@@ -6,14 +6,21 @@ import time
 
 
 class Application(tk.Frame):
-    def __init__(self, master, video_source=0):
+    def __init__(self, master):
         super().__init__(master)
 
         self.master.title("Term project")
 
-        self.video_cap = cv2.VideoCapture(video_source)
-        self.width = self.video_cap.get(cv2.CAP_PROP_FRAME_WIDTH)
-        self.height = self.video_cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
+        self.camera = cv2.VideoCapture(0)
+        self.width = int(self.camera.get(cv2.CAP_PROP_FRAME_WIDTH))
+        self.height = int(self.camera.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+        # for video recording fps
+        self.fps = int(self.camera.get(cv2.CAP_PROP_FPS))
+
+        # video file format
+        self.fourcc = cv2.VideoWriter_fourcc('m', 'p', '4', 'v')
+        self.is_recording = True
 
         # ---------------------------------------------------------
         # Widget
@@ -41,10 +48,15 @@ class Application(tk.Frame):
         self.btn_snapshot.configure(width=15, height=1, command=self.snapshot)
         self.btn_snapshot.grid(column=0, row=0, padx=30, pady=10)
 
-        # Close
+        # Record Button
+        self.btn_snapshot = tk.Button(self.btn_frame, text='Record')
+        self.btn_snapshot.configure(width=15, height=1, command=self.record)
+        self.btn_snapshot.grid(column=1, row=0, padx=20, pady=10)
+
+        # Close Button
         self.btn_close = tk.Button(self.btn_frame, text='Close')
         self.btn_close.configure(width=15, height=1, command=self.close_button)
-        self.btn_close.grid(column=1, row=0, padx=20, pady=10)
+        self.btn_close.grid(column=2, row=0, padx=10, pady=10)
 
         # ---------------------------------------------------------
         # Canvas Update
@@ -55,7 +67,7 @@ class Application(tk.Frame):
 
     def update(self):
         # Get a frame from the video source
-        _, frame = self.video_cap.read()
+        _, frame = self.camera.read()
 
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         self.photo = PIL.ImageTk.PhotoImage(image=PIL.Image.fromarray(frame))
@@ -67,15 +79,23 @@ class Application(tk.Frame):
 
     def snapshot(self):
         # Get a frame from the video source
-        _, frame = self.video_cap.read()
+        _, frame = self.camera.read()
         frame1 = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         cv2.imwrite("IMG-" + time.strftime("%Y-%d-%m-%H-%M-%S")+".jpg",
                     cv2.cvtColor(frame1, cv2.COLOR_BGR2RGB))
 
     def record(self):
-        # Todo
-        # to be implemented
-        pass
+        video = cv2.VideoWriter(f'{time.strftime("%Y-%d-%m-%H-%M-%S")}.mp4',
+                                self.fourcc, self.fps,
+                                (self.width, self.height))
+        while True:
+            _, frame = self.camera.read()
+            cv2.imshow('Now recording', frame)
+            video.write(frame)
+            # enter q to stop recording
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+        cv2.destroyAllWindows()
 
     def close_button(self):
         self.quit()
@@ -83,7 +103,6 @@ class Application(tk.Frame):
 
 def main():
     root = tk.Tk()
-    root.attributes('-fullscreen', True)
     app = Application(master=root)  # Inherit
     app.mainloop()
 
