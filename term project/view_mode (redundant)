@@ -1,16 +1,17 @@
-# This code was made by Umut and Zaid, the actual submitted code is inside the other file, camera_v1.py
+# This code was an attempt made by Umut and Zaid, the actual submitted code for grade is inside the other file, camera_v1.py
 
 import tkinter as tk
 from PIL import Image, ImageTk
 import cv2
 import glob
 
+
 class GUI:
     def __init__(self, based):
         self.counter = 0
         self.based = based
         self.based.title("View Mode Frame")
-        self.based.configure(bg ='silver')
+        self.based.configure(bg='silver')
 
         # https://www.howtobuildsoftware.com/index.php/how-do/4q1/python-canvas-tkinter-tkinter-canvas-resizing-tkinter-window-for-full-screen
         self.based.state('zoomed')
@@ -22,7 +23,7 @@ class GUI:
 
     # Image sliders that change the image in set amount of time
     def picture_viewer(self):
-        self.image_list= []
+        self.image_list = []
 
         # https://www.techbeamers.com/python-glob/
         # Change \uokta\Downloads\ to relevant directory in your PC
@@ -35,7 +36,7 @@ class GUI:
         else:
             self.counter = self.counter + 1
 
-        self.file = self.image_list [self.counter]
+        self.file = self.image_list[self.counter]
         self.load = Image.open(self.file)
 
         self.image_width = self.load.size[0]
@@ -51,6 +52,7 @@ class GUI:
         # changes image after 1.5 seconds or 1500 milliseconds
         # https://www.tutorialspoint.com/after-method-in-python-tkinter
         root.after(1500, self.picture_viewer)
+
 
 root = tk.Tk()
 program = GUI(root)
