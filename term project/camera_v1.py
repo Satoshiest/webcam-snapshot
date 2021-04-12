@@ -7,6 +7,7 @@ from PIL import Image, ImageTk
 import time
 import os
 
+# created by Satoshi Kameyama
 # install opencv-python (cv2)
 # install pillow (PIL)
 
