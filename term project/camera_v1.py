@@ -7,6 +7,9 @@ from PIL import Image, ImageTk
 import time
 import os
 
+# install opencv-python (cv2)
+# install pillow (PIL)
+
 
 def view_image():
     fTyp = [("", ".jpg")]
@@ -16,7 +19,7 @@ def view_image():
     root = tk.Tk()
     app = ViewMode(root, filepath.split('/')[-1])  # Inherit
     app.mainloop()
-    
+
 
 def watch_video():
     fTyp = [("", ".mp4")]
@@ -159,7 +162,6 @@ class ViewMode(tk.Frame):
                                  width=self.width, height=self.height)
         self.canvas1.configure(width=self.width, height=self.height)
         self.canvas1.grid(column=0, row=0, padx=10, pady=10)
-
         self.canvas1.place(x=0, y=0)
 
         self.img1 = Image.open(open(f'{self.file}', 'rb'))
@@ -175,4 +177,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
