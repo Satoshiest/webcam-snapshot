@@ -1,5 +1,4 @@
-# This code was an attempt made by Umut and Zaid, the actual submitted code for grade is inside the other file, camera_v1.py
-
+# This code was an attempt made by Umut and Zaid, the actual submitted code for grade is inside the other files
 import tkinter as tk
 from PIL import Image, ImageTk
 import cv2
